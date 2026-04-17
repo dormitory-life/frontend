@@ -15,32 +15,39 @@ export default function DormitoryCard({ dorm }: Props) {
       sx={{
         cursor: "pointer",
         borderRadius: 4,
-        height: "100%",
+        overflow: "hidden",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: { xs: "column", sm: "row" },
+        minHeight: { xs: 320, sm: 240 },
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: 6,
+        },
       }}
       onClick={() => navigate(`/dormitories/${dorm.id}`)}
     >
       <Box
         sx={{
-          width: "100%",
-          height: 240,
+          width: { xs: "100%", sm: "40%" },
+          minWidth: { sm: "40%" },
+          height: { xs: 220, sm: "auto" },
           backgroundColor: "#f5f5f5",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          p: 2,
           overflow: "hidden",
         }}
       >
         {photo ? (
-          <img
+          <Box
+            component="img"
             src={photo}
             alt={dorm.name}
-            style={{
+            sx={{
               width: "100%",
               height: "100%",
-              objectFit: "contain",
+              objectFit: "cover",
               display: "block",
             }}
           />
@@ -49,16 +56,45 @@ export default function DormitoryCard({ dorm }: Props) {
         )}
       </Box>
 
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
+      <CardContent
+        sx={{
+          width: { xs: "100%", sm: "60%" },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          p: 3,
+          textAlign: "left",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 1.5,
+            fontWeight: 700,
+          }}
+        >
           {dorm.name}
         </Typography>
 
-        <Typography color="text.secondary" sx={{ mb: 1 }}>
+        <Typography
+          color="text.secondary"
+          sx={{
+            mb: 2,
+            fontSize: "1rem",
+            lineHeight: 1.5,
+          }}
+        >
           {dorm.address}
         </Typography>
 
-        <Typography variant="body2">{dorm.description}</Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.7,
+          }}
+        >
+          {dorm.description}
+        </Typography>
       </CardContent>
     </Card>
   )
