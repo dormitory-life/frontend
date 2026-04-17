@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+.git
+.github
+Dockerfile
+README.md
+.env
+.env.*
