@@ -18,7 +18,7 @@ export default function DormitoryCard({ dorm }: Props) {
         overflow: "hidden",
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
-        minHeight: { xs: 320, sm: 240 },
+        height: { xs: 420, sm: 240 },
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
         "&:hover": {
           transform: "translateY(-2px)",
@@ -31,7 +31,7 @@ export default function DormitoryCard({ dorm }: Props) {
         sx={{
           width: { xs: "100%", sm: "40%" },
           minWidth: { sm: "40%" },
-          height: { xs: 220, sm: "auto" },
+          height: { xs: 220, sm: "100%" },
           backgroundColor: "#f5f5f5",
           display: "flex",
           alignItems: "center",
@@ -59,11 +59,13 @@ export default function DormitoryCard({ dorm }: Props) {
       <CardContent
         sx={{
           width: { xs: "100%", sm: "60%" },
+          minWidth: 0,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           p: 3,
           textAlign: "left",
+          overflow: "hidden",
         }}
       >
         <Typography
@@ -71,6 +73,9 @@ export default function DormitoryCard({ dorm }: Props) {
           sx={{
             mb: 1.5,
             fontWeight: 700,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
         >
           {dorm.name}
@@ -82,6 +87,9 @@ export default function DormitoryCard({ dorm }: Props) {
             mb: 2,
             fontSize: "1rem",
             lineHeight: 1.5,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
         >
           {dorm.address}
@@ -91,6 +99,12 @@ export default function DormitoryCard({ dorm }: Props) {
           variant="body1"
           sx={{
             lineHeight: 1.7,
+            whiteSpace: "pre-line",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: { xs: 4, sm: 5 },
           }}
         >
           {dorm.description}

@@ -478,7 +478,7 @@ export default function DormitoryPage() {
                   <Typography variant="subtitle2" color="text.secondary">
                     Описание
                   </Typography>
-                  <Typography sx={{ mt: 1 }}>
+                  <Typography sx={{ whiteSpace: "pre-line" }}>
                     {dorm?.description || "Описание отсутствует"}
                   </Typography>
                 </Box>
