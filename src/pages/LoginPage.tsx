@@ -44,9 +44,10 @@ export default function LoginPage() {
       color: "#111827",
     },
     "& .MuiInputBase-input": {
-      color: "#111827",
-      WebkitTextFillColor: "#111827",
-    },
+    color: "#111827",
+    WebkitTextFillColor: "#111827",
+    caretColor: "#111827",
+  },
     "& .MuiInputLabel-root": {
       color: "#6b7280",
     },
@@ -63,10 +64,11 @@ export default function LoginPage() {
       borderColor: "#1976d2",
     },
     "& input:-webkit-autofill": {
-      WebkitBoxShadow: "0 0 0 1000px #ffffff inset",
-      WebkitTextFillColor: "#111827",
-      transition: "background-color 9999s ease-out 0s",
-    },
+    WebkitBoxShadow: "0 0 0 1000px #ffffff inset",
+    WebkitTextFillColor: "#111827",
+    caretColor: "#111827",
+    transition: "background-color 9999s ease-out 0s",
+  },
   }
 
   return (
