@@ -5,7 +5,7 @@ import axios, {
 } from "axios"
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "/api",
 })
 
 type RetryableRequestConfig = AxiosRequestConfig & {
@@ -100,7 +100,7 @@ api.interceptors.response.use(
 
       try {
         const refreshResponse = await axios.post(
-          "http://localhost:8080/auth/refresh",
+          "/api/auth/refresh",
           {
             access_token: accessToken,
             refresh_token: refreshToken,
