@@ -88,6 +88,9 @@ export default function DormitoryPage() {
     residents_culture_level: 3,
   })
 
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
+  const [previewImageAlt, setPreviewImageAlt] = useState("")
+
   const setGradeValue = (key: keyof typeof gradeForm, value: number) => {
     setGradeForm((prev) => ({
       ...prev,
@@ -321,11 +324,16 @@ export default function DormitoryPage() {
                   <img
                     src={currentPhoto}
                     alt={dorm?.name ?? "Dormitory photo"}
+                    onClick={() => {
+                      setPreviewImageUrl(currentPhoto)
+                      setPreviewImageAlt(dorm?.name ?? "Dormitory photo")
+                    }}
                     style={{
                       maxWidth: "100%",
                       maxHeight: "100%",
                       objectFit: "contain",
                       display: "block",
+                      cursor: "zoom-in",
                     }}
                   />
                 ) : (
@@ -374,7 +382,11 @@ export default function DormitoryPage() {
                     {photos.map((photo, index) => (
                       <Box
                         key={photo.path}
-                        onClick={() => setSelectedPhotoIndex(index)}
+                        onClick={() => {
+                          setSelectedPhotoIndex(index)
+                          setPreviewImageUrl(photo.url)
+                          setPreviewImageAlt(photo.name ?? dorm?.name ?? `Photo ${index + 1}`)
+                        }}
                         sx={{
                           width: 96,
                           height: 72,
@@ -632,6 +644,10 @@ export default function DormitoryPage() {
                 review={review}
                 isMine={review.owner_id === currentUserId}
                 onDelete={handleDeleteReview}
+                onImageClick={(url, alt) => {
+                  setPreviewImageUrl(url)
+                  setPreviewImageAlt(alt ?? review.title ?? "Review photo")
+                }}
               />
             ))
           ) : (
@@ -838,6 +854,79 @@ export default function DormitoryPage() {
             Отправить
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(previewImageUrl)}
+        onClose={() => {
+          setPreviewImageUrl(null)
+          setPreviewImageAlt("")
+        }}
+        maxWidth="xl"
+        fullWidth
+        BackdropProps={{
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.72)",
+            backdropFilter: "blur(3px)",
+          },
+        }}
+        PaperProps={{
+          sx: {
+            backgroundColor: "transparent",
+            backgroundImage: "none",
+            boxShadow: "none",
+            overflow: "visible",
+          },
+        }}
+      >
+        <DialogContent
+          sx={{
+            p: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "80vh",
+            overflow: "hidden",
+            backgroundColor: "transparent",
+          }}
+        >
+          {previewImageUrl && (
+            <Box
+              component="img"
+              src={previewImageUrl}
+              alt={previewImageAlt}
+              sx={{
+                width: "100%",
+                height: "100%",
+                maxWidth: "90vw",
+                maxHeight: "80vh",
+                objectFit: "contain",
+                display: "block",
+                borderRadius: 2,
+              }}
+            />
+          )}
+        </DialogContent>
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            setPreviewImageUrl(null)
+            setPreviewImageAlt("")
+          }}
+          sx={{
+            position: "fixed",
+            top: 16,
+            right: 16,
+            minWidth: 44,
+            width: 44,
+            height: 44,
+            borderRadius: "50%",
+            zIndex: 1,
+          }}
+        >
+          ×
+        </Button>
       </Dialog>
 
       <Snackbar
