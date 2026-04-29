@@ -14,9 +14,15 @@ interface Props {
   review: Review
   isMine?: boolean
   onDelete?: (reviewId: string) => void
+  onImageClick?: (url: string, alt?: string) => void
 }
 
-export default function ReviewCard({ review, isMine, onDelete }: Props) {
+export default function ReviewCard({
+  review,
+  isMine,
+  onDelete,
+  onImageClick,
+}: Props) {
   return (
     <Card sx={{ mb: 3, borderRadius: 3 }}>
       <CardContent>
@@ -35,7 +41,9 @@ export default function ReviewCard({ review, isMine, onDelete }: Props) {
               {new Date(review.created_at).toLocaleString()}
             </Typography>
 
-            <Typography sx={{ mb: 2 }}>{review.description}</Typography>
+            <Typography sx={{ mb: 2, whiteSpace: "pre-line" }}>
+              {review.description}
+            </Typography>
           </Box>
 
           {isMine && onDelete && (
@@ -51,9 +59,15 @@ export default function ReviewCard({ review, isMine, onDelete }: Props) {
 
         {review.review_photos?.length > 0 && (
           <ImageList cols={3} gap={12}>
-            {review.review_photos.map((photo) => (
+            {review.review_photos.map((photo, index) => (
               <ImageListItem key={photo.path}>
                 <Box
+                  onClick={() =>
+                    onImageClick?.(
+                      photo.url,
+                      photo.name ?? review.title ?? `Review photo ${index + 1}`
+                    )
+                  }
                   sx={{
                     width: "100%",
                     height: 220,
@@ -64,11 +78,12 @@ export default function ReviewCard({ review, isMine, onDelete }: Props) {
                     alignItems: "center",
                     justifyContent: "center",
                     p: 1,
+                    cursor: "zoom-in",
                   }}
                 >
                   <img
                     src={photo.url}
-                    alt={photo.name}
+                    alt={photo.name ?? `Review photo ${index + 1}`}
                     loading="lazy"
                     style={{
                       maxWidth: "100%",

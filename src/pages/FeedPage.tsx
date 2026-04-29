@@ -39,6 +39,9 @@ export default function FeedPage() {
   const [errorText, setErrorText] = useState("")
   const [successText, setSuccessText] = useState("")
 
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
+  const [previewImageAlt, setPreviewImageAlt] = useState("")
+
   const loadEvents = async (targetPage: number) => {
     if (!id) return
 
@@ -139,6 +142,10 @@ export default function FeedPage() {
             key={event.event_id}
             event={event}
             onDelete={handleDeleteEvent}
+            onImageClick={(url, alt) => {
+              setPreviewImageUrl(url)
+              setPreviewImageAlt(alt ?? event.title ?? "Event photo")
+            }}
           />
         ))
       ) : (
@@ -200,6 +207,79 @@ export default function FeedPage() {
             Добавить
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(previewImageUrl)}
+        onClose={() => {
+          setPreviewImageUrl(null)
+          setPreviewImageAlt("")
+        }}
+        maxWidth="xl"
+        fullWidth
+        BackdropProps={{
+          sx: {
+            backgroundColor: "rgba(0, 0, 0, 0.72)",
+            backdropFilter: "blur(3px)",
+          },
+        }}
+        PaperProps={{
+          sx: {
+            backgroundColor: "transparent",
+            backgroundImage: "none",
+            boxShadow: "none",
+            overflow: "visible",
+          },
+        }}
+      >
+        <DialogContent
+          sx={{
+            p: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "80vh",
+            overflow: "hidden",
+            backgroundColor: "transparent",
+          }}
+        >
+          {previewImageUrl && (
+            <Box
+              component="img"
+              src={previewImageUrl}
+              alt={previewImageAlt}
+              sx={{
+                width: "100%",
+                height: "100%",
+                maxWidth: "90vw",
+                maxHeight: "80vh",
+                objectFit: "contain",
+                display: "block",
+                borderRadius: 2,
+              }}
+            />
+          )}
+        </DialogContent>
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            setPreviewImageUrl(null)
+            setPreviewImageAlt("")
+          }}
+          sx={{
+            position: "fixed",
+            top: 16,
+            right: 16,
+            minWidth: 44,
+            width: 44,
+            height: 44,
+            borderRadius: "50%",
+            zIndex: 1,
+          }}
+        >
+          ×
+        </Button>
       </Dialog>
 
       <Snackbar

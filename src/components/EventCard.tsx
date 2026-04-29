@@ -12,9 +12,10 @@ import {
 interface Props {
   event: Event
   onDelete?: (eventId: string) => void
+  onImageClick?: (url: string, alt?: string) => void
 }
 
-export default function EventCard({ event, onDelete }: Props) {
+export default function EventCard({ event, onDelete, onImageClick }: Props) {
   const photo = event.event_photos?.[0]?.url
 
   return (
@@ -27,6 +28,11 @@ export default function EventCard({ event, onDelete }: Props) {
         }}
       >
         <Box
+          onClick={() => {
+            if (photo) {
+              onImageClick?.(photo, event.title ?? "Event photo")
+            }
+          }}
           sx={{
             width: "100%",
             height: { xs: 260, md: 240 },
@@ -36,6 +42,7 @@ export default function EventCard({ event, onDelete }: Props) {
             justifyContent: "center",
             p: 1,
             overflow: "hidden",
+            cursor: photo ? "zoom-in" : "default",
           }}
         >
           {photo ? (
@@ -70,7 +77,9 @@ export default function EventCard({ event, onDelete }: Props) {
                 {new Date(event.created_at).toLocaleString()}
               </Typography>
 
-              <Typography>{event.description}</Typography>
+              <Typography sx={{ whiteSpace: "pre-line" }}>
+                {event.description}
+              </Typography>
             </Box>
 
             {onDelete && (
